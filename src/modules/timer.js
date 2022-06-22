@@ -1,9 +1,9 @@
 "use strict";
 const timer = (deadline) => {
-  console.log(deadline);
   const timerHours = document.getElementById("timer-hours");
   const timerMinutes = document.getElementById("timer-minutes");
   const timerSeconds = document.getElementById("timer-seconds");
+  let timerInterval;
   const getTimeRemaining = () => {
     let dateStop = new Date(deadline).getTime();
     let dateNow = new Date().getTime();
@@ -29,8 +29,9 @@ const timer = (deadline) => {
       timerSeconds.textContent = "00";
     }
   };
+  updateClock();
 
-  let timerInterval = setInterval(updateClock, 1000);
+  timerInterval = setInterval(updateClock, 1000);
 };
 
 export default timer;
