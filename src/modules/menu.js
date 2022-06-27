@@ -2,7 +2,6 @@
 const menu = () => {
   const menuBtn = document.querySelector(".menu");
   const menu = document.querySelector("menu");
-  const menuItems = menu.querySelectorAll("ul>li>a");
 
   const handleMenu = () => {
     menu.classList.toggle("active-menu");
