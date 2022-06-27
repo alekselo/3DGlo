@@ -14,8 +14,14 @@ const modal = () => {
       }
     });
   });
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
+
+  modal.addEventListener("click", (e) => {
+    if (
+      !e.target.closest(".popup-content") ||
+      e.target.classList.contains("popup-close")
+    ) {
+      modal.style.display = "none";
+    }
   });
 
   const popupAnimation = () => {
