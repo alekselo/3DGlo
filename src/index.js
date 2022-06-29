@@ -6,6 +6,7 @@ import validation from "./modules/validation";
 import tabs from "./modules/tabs";
 import dots from "./modules/dots";
 import slider from "./modules/slider";
+import calculator from "./modules/calculator";
 
 timer("11 july 2022");
 menu();
@@ -14,3 +15,4 @@ validation();
 tabs();
 dots();
 slider();
+calculator();
