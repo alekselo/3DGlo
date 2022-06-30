@@ -6,6 +6,7 @@ const calculator = (price = 100) => {
   const calcDay = document.querySelector(".calc-day");
   const total = document.getElementById("total");
   let step = 0;
+  let result = 0;
 
   calcBlock.addEventListener("change", (e) => {
     if (
@@ -42,15 +43,34 @@ const calculator = (price = 100) => {
     }
     total.textContent = totalValue;
 
-    // const totalAnimation = () => {
-    //   const start = requestAnimationFrame(totalAnimation);
-    //   step += 1;
-    //   total.textContent = step;
-    //   if (step === totalValue) {
-    //     cancelAnimationFrame(start);
-    //   }
-    // };
-    // totalAnimation();
+    const animateTotal = () => {
+      let step = 1;
+      let time = 5000;
+
+      let change = time / (totalValue / step);
+      if (result < totalValue) {
+        let interval = setInterval(() => {
+          if (result === totalValue) {
+            clearInterval(interval);
+          } else {
+            result += step;
+          }
+          total.textContent = result;
+        }, change);
+      }
+      if (result > totalValue) {
+        let interval = setInterval(() => {
+          if (result === totalValue) {
+            clearInterval(interval);
+          } else {
+            result -= step;
+          }
+          total.textContent = result;
+        }, change);
+      }
+    };
+
+    animateTotal();
   };
 };
 
