@@ -61,7 +61,7 @@ const validation = () => {
   const userPhoneValidation = () => {
     phoneInput.forEach((item) => {
       item.addEventListener("input", (elem) => {
-        elem.target.value = elem.target.value.replace(/[^0-9\()\-]/g, "");
+        elem.target.value = elem.target.value.replace(/[^0-9\()\+\-]/g, "");
       });
     });
     phoneInput.forEach((item) => {

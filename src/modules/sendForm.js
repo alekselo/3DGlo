@@ -4,14 +4,50 @@ const sendForm = ({ formId, someElem = [] }) => {
   const loadText = "Загрузка...";
   const errorText = "Ошибка";
   const successText = "Спасибо! Наш менеджер с Вами свяжется!";
+  const formElements = form.querySelectorAll("input");
+
+  // const removeErrorClass = (item) => {
+  //   item.classList.remove("error");
+  // };
+
+  formElements.forEach((input) => {
+    input.addEventListener("invalid", (e) => {
+      e.preventDefault();
+      input.classList.add("error");
+    });
+  });
+
+  formElements.forEach((input) => {
+    input.addEventListener("input", (e) => {
+      e.preventDefault();
+      let regUserName = /^[а-яА-ЯёЁ]{2,}$/;
+      let regUserPhone = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
+      let regUserEmail = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
+      if (input.name === "user_name") {
+        if (regUserName.test(input.value)) {
+          input.classList.remove("error");
+        }
+      }
+      if (input.name === "user_email") {
+        if (regUserEmail.test(input.value)) {
+          input.classList.remove("error");
+        }
+      }
+      if (input.name === "user_phone") {
+        if (regUserPhone.test(input.value)) {
+          input.classList.remove("error");
+        }
+      }
+    });
+  });
 
   const validate = (list) => {
     let success = true;
-    // list.forEach((input) => {
-    //   if (!input.classList.contains("success")) {
-    //     success = false;
-    //   }
-    // });
+    formElements.forEach((input) => {
+      if (input.classList.contains("error")) {
+        success = false;
+      }
+    });
     return success;
   };
   const sendData = (data) => {
@@ -22,7 +58,6 @@ const sendForm = ({ formId, someElem = [] }) => {
     }).then((res) => res.json());
   };
   const submitForm = () => {
-    const formElements = form.querySelectorAll("input");
     const formData = new FormData(form);
     const formBody = {};
 
@@ -35,9 +70,9 @@ const sendForm = ({ formId, someElem = [] }) => {
 
     someElem.forEach((elem) => {
       const element = document.getElementById(elem.id);
-      if (elem.type === "block") {
+      if (elem.type === "block" && 0 < +element.textContent) {
         formBody[elem.id] = element.textContent;
-      } else if (elem.type === "input") {
+      } else if (elem.type === "input" && 0 < +element.value) {
         formBody[elem.id] = element.value;
       }
     });
@@ -48,13 +83,20 @@ const sendForm = ({ formId, someElem = [] }) => {
           statusBlock.textContent = successText;
           formElements.forEach((input) => {
             input.value = "";
+            input.classList.remove("error");
+            setTimeout(() => {
+              statusBlock.textContent = "";
+            }, 3000);
           });
         })
         .catch((error) => {
           statusBlock.textContent = errorText;
+          setTimeout(() => {
+            statusBlock.textContent = "";
+          }, 3000);
         });
     } else {
-      alert("Данные не корректны!");
+      formElements.forEach((input) => {});
     }
   };
   try {
