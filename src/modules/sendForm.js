@@ -2,7 +2,7 @@ const sendForm = ({ formId, someElem = [] }) => {
   const form = document.getElementById(formId);
   const statusBlock = document.createElement("div");
   const loadText = "Загрузка...";
-  const errorText = "Ошибка";
+  const errorText = "Ошибка! Введите корректные данные!";
   const successText = "Спасибо! Наш менеджер с Вами свяжется!";
   const formElements = form.querySelectorAll("input");
 
@@ -10,10 +10,20 @@ const sendForm = ({ formId, someElem = [] }) => {
   const regUserPhone = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
   const regUserEmail = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
 
+  const errorMessage = () => {
+    statusBlock.classList.add("white");
+    statusBlock.textContent = errorText;
+    form.append(statusBlock);
+    setTimeout(() => {
+      statusBlock.textContent = "";
+    }, 3000);
+  };
+
   formElements.forEach((input) => {
     input.addEventListener("invalid", (e) => {
       e.preventDefault();
       input.classList.add("error");
+      errorMessage();
     });
   });
 
@@ -39,7 +49,7 @@ const sendForm = ({ formId, someElem = [] }) => {
     });
   });
 
-  const validate = (list) => {
+  const validate = () => {
     let success = true;
 
     formElements.forEach((input) => {
@@ -126,7 +136,11 @@ const sendForm = ({ formId, someElem = [] }) => {
     }
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      submitForm();
+      if (validate(formElements)) {
+        submitForm();
+      } else {
+        errorMessage();
+      }
     });
   } catch (error) {
     console.log(error.message);
