@@ -6,9 +6,9 @@ const sendForm = ({ formId, someElem = [] }) => {
   const successText = "Спасибо! Наш менеджер с Вами свяжется!";
   const formElements = form.querySelectorAll("input");
 
-  // const removeErrorClass = (item) => {
-  //   item.classList.remove("error");
-  // };
+  const regUserName = /^[а-яА-ЯёЁ]{2,}$/;
+  const regUserPhone = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
+  const regUserEmail = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
 
   formElements.forEach((input) => {
     input.addEventListener("invalid", (e) => {
@@ -20,9 +20,7 @@ const sendForm = ({ formId, someElem = [] }) => {
   formElements.forEach((input) => {
     input.addEventListener("input", (e) => {
       e.preventDefault();
-      let regUserName = /^[а-яА-ЯёЁ]{2,}$/;
-      let regUserPhone = /^[\d\+][\d\(\)\ -]{4,14}\d$/;
-      let regUserEmail = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
+
       if (input.name === "user_name") {
         if (regUserName.test(input.value)) {
           input.classList.remove("error");
@@ -43,11 +41,28 @@ const sendForm = ({ formId, someElem = [] }) => {
 
   const validate = (list) => {
     let success = true;
+
     formElements.forEach((input) => {
+      if (input.name === "user_name") {
+        if (!regUserName.test(input.value)) {
+          input.classList.add("error");
+        }
+      }
+      if (input.name === "user_email") {
+        if (!regUserEmail.test(input.value)) {
+          input.classList.add("error");
+        }
+      }
+      if (input.name === "user_phone") {
+        if (!regUserPhone.test(input.value)) {
+          input.classList.add("error");
+        }
+      }
       if (input.classList.contains("error")) {
         success = false;
       }
     });
+
     return success;
   };
   const sendData = (data) => {
@@ -89,7 +104,7 @@ const sendForm = ({ formId, someElem = [] }) => {
           statusBlock.textContent = successText;
           formElements.forEach((input) => {
             input.value = "";
-            input.classList.remove("error");
+
             setTimeout(() => {
               statusBlock.textContent = "";
             }, 3000);
