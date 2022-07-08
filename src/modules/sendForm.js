@@ -64,7 +64,7 @@ const sendForm = ({ formId, someElem = [] }) => {
     formData.forEach((val, key) => {
       formBody[key] = val;
     });
-
+    statusBlock.classList.add("white");
     statusBlock.textContent = loadText;
     form.append(statusBlock);
 
@@ -76,6 +76,12 @@ const sendForm = ({ formId, someElem = [] }) => {
         formBody[elem.id] = element.value;
       }
     });
+    if (
+      formBody.hasOwnProperty("user_message") &&
+      formBody.user_message === ""
+    ) {
+      delete formBody.user_message;
+    }
 
     if (validate(formElements)) {
       sendData(formBody)
